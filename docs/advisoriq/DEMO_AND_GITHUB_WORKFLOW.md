@@ -2,7 +2,7 @@
 
 ## Demo flow for a non-technical user
 
-1. Start the site with `npm start`.
+1. Start the site with `cd advisoriq && npm start`.
 2. Open `http://127.0.0.1:3000/`.
 3. Search `RELIANCE.NS` or `NIFTYBEES.NS`.
 4. Point out the short answer under `Why picked`.
@@ -18,7 +18,7 @@ There are two different modes:
 
 ### Current MVP mode
 
-The demo uses local Indian stock and ETF samples in `src/app.js`, but the screener now automatically scores, filters, ranks, and publishes monthly picks from that sample universe.
+The demo uses local Indian stock and ETF samples in `advisoriq/src/app.js`, but the screener now automatically scores, filters, ranks, and publishes monthly picks from that sample universe.
 
 ### Future production mode
 
@@ -67,7 +67,7 @@ Suppose you want to change Reliance’s short reason.
 git pull --rebase origin main
 ```
 
-2. Open `src/app.js` and find:
+2. Open `advisoriq/src/app.js` and find:
 
 ```js
 ticker: "RELIANCE.NS"
@@ -78,13 +78,13 @@ ticker: "RELIANCE.NS"
 4. Validate:
 
 ```bash
-npm run validate
+cd advisoriq && npm run validate
 ```
 
 5. Commit and push:
 
 ```bash
-git add src/app.js
+git add advisoriq/src/app.js
 git commit -m "Update Reliance pick reason"
 git push origin main
 ```
@@ -94,11 +94,12 @@ git push origin main
 
 ## Why AdvisorIQ docs use scoped paths
 
-The root `README.md` and generic workflow guide paths are intentionally avoided in this PR to prevent add/add merge conflicts with existing files on `main`. AdvisorIQ-specific documentation now lives in:
+The root `README.md`, root `index.html`, root `package.json`, root `src`, root `scripts`, and generic workflow guide paths are intentionally avoided in this PR to prevent add/add merge conflicts with existing files on `main`. AdvisorIQ-specific documentation now lives in:
 
 ```text
 docs/ADVISORIQ_README.md
 docs/advisoriq/DEMO_AND_GITHUB_WORKFLOW.md
+advisoriq/
 ```
 
 This keeps the new screener work conflict-free while preserving the full setup, preview, validation, and workflow notes.
@@ -108,7 +109,7 @@ This keeps the new screener work conflict-free while preserving the full setup, 
 If GitHub says the old pull request has conflicts, close that PR and open a new one from the latest clean branch. Before opening the new PR, run:
 
 ```bash
-npm run validate
+cd advisoriq && npm run validate
 ```
 
 The validator now scans every project text file, including docs, HTML, CSS, JavaScript, JSON, and Markdown, and fails if conflict markers are present anywhere. This means you do not have to manually inspect every file for merge markers before creating the new PR.
@@ -117,7 +118,7 @@ Suggested flow:
 
 ```bash
 git status
-npm run validate
+cd advisoriq && npm run validate
 git add .
 git commit -m "Your change"
 git push origin your-branch
@@ -130,7 +131,7 @@ Then open a fresh PR from that pushed branch.
 If you want to check the website before pushing to GitHub, run:
 
 ```bash
-npm run preview
+cd advisoriq && npm run preview
 ```
 
 Then open:
@@ -182,4 +183,4 @@ git push origin main
 
 ## Best next improvement to reduce conflicts
 
-Move the mock stock data out of `src/app.js` into separate files under `src/data/`. This lets one person update monthly picks while another person changes UI behavior.
+Move the mock stock data out of `advisoriq/src/app.js` into separate files under `advisoriq/src/data/`. This lets one person update monthly picks while another person changes UI behavior.
