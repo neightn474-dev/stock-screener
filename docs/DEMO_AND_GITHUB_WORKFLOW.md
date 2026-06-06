@@ -91,6 +91,17 @@ git push origin main
 
 
 
+
+## Why project docs are not in root README
+
+The root `README.md` was removed from this PR to avoid a GitHub add/add merge conflict with the repository's existing `README.md` on `main`. AdvisorIQ-specific project documentation now lives in:
+
+```text
+docs/ADVISORIQ_README.md
+```
+
+This keeps the new screener work conflict-free while preserving the full setup, preview, validation, and workflow notes.
+
 ## Fresh PR when the old one has conflicts
 
 If GitHub says the old pull request has conflicts, close that PR and open a new one from the latest clean branch. Before opening the new PR, run:
