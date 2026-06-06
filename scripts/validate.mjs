@@ -26,6 +26,13 @@ for (const phrase of requiredPhrases) {
   }
 }
 
+const conflictMarkers = ["<".repeat(7), "=".repeat(7), ">".repeat(7)];
+for (const marker of conflictMarkers) {
+  if (combined.includes(marker)) {
+    throw new Error(`Merge conflict marker found: ${marker}`);
+  }
+}
+
 const instrumentCount = (app.match(/createInstrument\(\{/g) || []).length;
 if (instrumentCount < 15) {
   throw new Error(`Expected at least 15 Indian stock/ETF definitions, found ${instrumentCount}`);

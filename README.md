@@ -4,6 +4,29 @@ AdvisorIQ is a static MVP for an advisor-style Indian stock and ETF research web
 
 This version is still static and has no backend or paid market-data API yet, but it now includes a working client-side screener. The app scans the local Indian stock/ETF sample universe, filters ineligible instruments, calculates weighted scores, and generates monthly picks automatically.
 
+
+## Preview before pushing
+
+Use this when you want to see the website before pushing changes to GitHub:
+
+```bash
+npm run preview
+```
+
+Then open:
+
+```text
+http://127.0.0.1:4173/
+```
+
+Before pushing, also run:
+
+```bash
+npm run validate
+```
+
+The validator now fails if real merge-conflict markers are left in source files.
+
 ## How to run it locally
 
 ```bash

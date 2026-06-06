@@ -5,6 +5,7 @@
   "description": "Advisor-style stock research platform MVP with monthly picks, risk intelligence, and technical analysis.",
   "scripts": {
     "start": "python3 -m http.server 3000",
+    "preview": "python3 -m http.server 4173",
     "validate": "node scripts/validate.mjs"
   },
   "engines": {

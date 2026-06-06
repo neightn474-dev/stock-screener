@@ -89,6 +89,23 @@ git commit -m "Update Reliance pick reason"
 git push origin main
 ```
 
+
+## Preview before pushing
+
+If you want to check the website before pushing to GitHub, run:
+
+```bash
+npm run preview
+```
+
+Then open:
+
+```text
+http://127.0.0.1:4173/
+```
+
+This lets you preview the working Indian screener locally, confirm the monthly picks render correctly, and avoid pushing broken conflict-marker text.
+
 ## Will every future push create conflicts?
 
 No. Pushing again does not automatically create conflicts.
@@ -106,11 +123,9 @@ Conflicts usually happen only when:
 3. Look for conflict markers:
 
 ```text
-<<<<<<< HEAD
-Your local version
-=======
-GitHub/remote version
->>>>>>> branch-name
+START CONFLICT MARKER: your local version
+SEPARATOR MARKER: incoming GitHub/remote version
+END CONFLICT MARKER: branch name
 ```
 
 4. Keep the correct final version and remove the markers.
