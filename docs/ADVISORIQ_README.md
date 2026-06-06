@@ -8,6 +8,26 @@ This version is still static and has no backend or paid market-data API yet, but
 
 
 
+
+## Package script conflict resolution
+
+There is intentionally no root-level `package.json` in this PR. The app scripts live only in:
+
+```text
+advisoriq/package.json
+```
+
+That scoped package keeps the useful commands without conflicting with any `package.json` that may already exist on `main`:
+
+```bash
+cd advisoriq
+npm start
+npm run preview
+npm run validate
+```
+
+The `preview` script is kept because it lets reviewers open the site locally before pushing or merging.
+
 ## Conflict-safe app location
 
 The working website has been moved into the scoped `advisoriq/` directory so this PR does not conflict with root-level files on `main`, such as `index.html`, `package.json`, `src/`, or `scripts/`.
