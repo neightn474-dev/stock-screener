@@ -308,7 +308,7 @@ advisoriq/src/styles.css
 Edit:
 
 ```text
-advisoriq/scripts/validate.mjs
+advisoriq/tools/validate.mjs
 ```
 
 ## How to validate before pushing
