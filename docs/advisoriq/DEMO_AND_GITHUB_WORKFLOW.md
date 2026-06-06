@@ -92,12 +92,13 @@ git push origin main
 
 
 
-## Why project docs are not in root README
+## Why AdvisorIQ docs use scoped paths
 
-The root `README.md` was removed from this PR to avoid a GitHub add/add merge conflict with the repository's existing `README.md` on `main`. AdvisorIQ-specific project documentation now lives in:
+The root `README.md` and generic workflow guide paths are intentionally avoided in this PR to prevent add/add merge conflicts with existing files on `main`. AdvisorIQ-specific documentation now lives in:
 
 ```text
 docs/ADVISORIQ_README.md
+docs/advisoriq/DEMO_AND_GITHUB_WORKFLOW.md
 ```
 
 This keeps the new screener work conflict-free while preserving the full setup, preview, validation, and workflow notes.
