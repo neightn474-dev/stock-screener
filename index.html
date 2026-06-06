@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AdvisorIQ screens stocks with fundamentals, valuation, technicals, news, and geopolitical risk to produce advisor-style monthly picks."
+    />
+    <title>AdvisorIQ Stock Picks</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#top" aria-label="AdvisorIQ home">
+          <span class="brand-mark">AIQ</span>
+          <span>AdvisorIQ</span>
+        </a>
+        <div class="nav-links">
+          <a href="#analysis">Analyze</a>
+          <a href="#picks">Monthly Picks</a>
+          <a href="#automation">Auto Screener</a>
+          <a href="#coverage">Coverage</a>
+          <a href="#demo-flow">Example Flow</a>
+          <a href="#portfolio">Model Portfolio</a>
+          <a href="#risk-feed">Risk Feed</a>
+          <a href="#methodology">Method</a>
+        </div>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero section-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Digital investment committee MVP</p>
+          <h1>Advisor-style stock picks with short reasons users can trust.</h1>
+          <p class="hero-lede">
+            AdvisorIQ combines fundamentals, valuation, technical trend, news events, and geopolitical risk to rank long-term opportunities and monitor when previous picks should be downgraded or removed.
+          </p>
+          <form class="search-card" id="stock-search-form" aria-label="Analyze a stock">
+            <label for="ticker-input">Analyze a stock</label>
+            <div class="search-row">
+              <input id="ticker-input" name="ticker" placeholder="Try MSFT, NVDA, COST, TSLA" autocomplete="off" />
+              <button type="submit">Analyze</button>
+            </div>
+            <p>Start with a ticker, then review the advisor summary, scorecard, short reason, risks, and technical context.</p>
+          </form>
+        </div>
+        <aside class="hero-panel" aria-label="Current market pulse">
+          <div class="panel-topline">
+            <span>June 2026 model pulse</span>
+            <strong>Neutral-positive</strong>
+          </div>
+          <div class="pulse-grid">
+            <div>
+              <span>Best setup</span>
+              <strong>Quality growth</strong>
+            </div>
+            <div>
+              <span>Primary risk</span>
+              <strong>Valuation</strong>
+            </div>
+            <div>
+              <span>News regime</span>
+              <strong>Selective</strong>
+            </div>
+            <div>
+              <span>Technical breadth</span>
+              <strong>Improving</strong>
+            </div>
+          </div>
+          <div class="committee-note">
+            <span class="status-dot"></span>
+            Monthly picks refresh at the start of each month; severe news can trigger an emergency review.
+          </div>
+        </aside>
+      </section>
+
+      <section class="section" id="analysis">
+        <div class="section-heading">
+          <p class="eyebrow">Single-stock report</p>
+          <h2>Advisor analysis workspace</h2>
+          <p>Every stock report shows the conclusion first, then the short reason, score breakdown, technical trend, news risk, and removal triggers.</p>
+        </div>
+        <article class="analysis-card" id="analysis-card" aria-live="polite"></article>
+      </section>
+
+      <section class="section" id="picks">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Monthly picks</p>
+            <h2>Best picks for this month</h2>
+            <p>These cards are intentionally short: users can see why a stock was picked, the main risk, and what could remove it.</p>
+          </div>
+          <button class="ghost-button" id="rerank-button" type="button">Re-run ranking demo</button>
+        </div>
+        <div class="pick-grid" id="monthly-picks"></div>
+      </section>
+
+
+      <section class="section" id="automation">
+        <div class="section-heading">
+          <p class="eyebrow">Manual now, automatic later</p>
+          <h2>Will the screener find picks on its own?</h2>
+          <p>Yes for the production product. This MVP uses manually mocked tickers so the interface can be tested first, but the intended system will automatically scan a market universe and publish the best monthly picks.</p>
+        </div>
+        <div class="automation-grid">
+          <article>
+            <span>Current MVP</span>
+            <h3>Manual mock data</h3>
+            <p>Tickers like MSFT, COST, V, AMZN, UNH, and TSLA are currently stored in <code>src/app.js</code> for demonstration.</p>
+          </article>
+          <article>
+            <span>Production screener</span>
+            <h3>Automatic monthly ranking</h3>
+            <p>The real system should scan as many major-exchange stocks as practical, score every eligible stock, remove red flags, and select top candidates.</p>
+          </article>
+          <article>
+            <span>User search</span>
+            <h3>Manual lookup still exists</h3>
+            <p>Users can still type a ticker to analyze one stock, but monthly picks should be generated by the platform automatically.</p>
+          </article>
+        </div>
+      </section>
+
+
+      <section class="section" id="coverage">
+        <div class="section-heading">
+          <p class="eyebrow">Broad market coverage</p>
+          <h2>The screener should scan as many stocks as practical.</h2>
+          <p>The production goal is not to manually maintain a small ticker list. AdvisorIQ should scan a broad stock universe, remove low-quality or unreliable names, and rank the best eligible opportunities.</p>
+        </div>
+        <div class="coverage-grid">
+          <article>
+            <span>Phase 1</span>
+            <h3>Trusted index universe</h3>
+            <p>Start with S&P 500 or Nifty 500 so the first automatic picks use liquid stocks with better data quality.</p>
+          </article>
+          <article>
+            <span>Phase 2</span>
+            <h3>Large and mid caps</h3>
+            <p>Expand beyond the first index to capture more opportunities while still controlling liquidity and reporting quality.</p>
+          </article>
+          <article>
+            <span>Phase 3</span>
+            <h3>All major exchanges</h3>
+            <p>Scan as many NYSE, Nasdaq, AMEX, NSE, BSE, and other major-exchange stocks as the data provider supports.</p>
+          </article>
+          <article>
+            <span>Protection</span>
+            <h3>Filter before picking</h3>
+            <p>Remove missing data, poor liquidity, extreme dilution, accounting red flags, and severe financial distress before ranking.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="demo-flow">
+        <div class="section-heading">
+          <p class="eyebrow">Working example</p>
+          <h2>Example: how a user understands one pick</h2>
+          <p>Use this flow when demoing the site or checking whether future changes still make sense.</p>
+        </div>
+        <div class="example-flow-grid">
+          <article>
+            <span>Step 1</span>
+            <h3>Search MSFT</h3>
+            <p>The search box loads Microsoft from the mock stock dataset and opens the advisor report.</p>
+          </article>
+          <article>
+            <span>Step 2</span>
+            <h3>Read the short answer</h3>
+            <p>The report immediately explains why it was picked: recurring revenue, free cash flow, AI/cloud growth, and positive technical momentum.</p>
+          </article>
+          <article>
+            <span>Step 3</span>
+            <h3>Check the risk</h3>
+            <p>The card shows the main risk and the removal trigger, so users understand what could change the recommendation.</p>
+          </article>
+          <article>
+            <span>Step 4</span>
+            <h3>Monitor after picking</h3>
+            <p>The model portfolio shows whether previous picks remain holds, get upgraded, downgraded, or removed.</p>
+          </article>
+        </div>
+        <div class="workflow-note">
+          <strong>Developer note:</strong> most content changes happen in <code>src/app.js</code>. Pull the latest code before editing, validate with <code>npm run validate</code>, then commit and push. This avoids most GitHub conflicts.
+        </div>
+      </section>
+
+      <section class="section section-grid" id="portfolio">
+        <div>
+          <div class="section-heading compact">
+            <p class="eyebrow">Model portfolio monitoring</p>
+            <h2>Previous picks are reviewed, not blindly held.</h2>
+            <p>Underperformance alone does not force a removal. A stock is removed when the thesis weakens through fundamentals, news, valuation, or technical breakdowns.</p>
+          </div>
+          <div class="portfolio-table-wrap">
+            <table class="portfolio-table">
+              <thead>
+                <tr>
+                  <th>Stock</th>
+                  <th>Picked</th>
+                  <th>Return</th>
+                  <th>Status</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody id="portfolio-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <aside class="rule-card">
+          <p class="eyebrow">Removal logic</p>
+          <h3>Downgrade only when evidence changes.</h3>
+          <ul>
+            <li>Final score drops below 60.</li>
+            <li>Negative news is material or thesis-breaking.</li>
+            <li>Price breaks below the 200-day average with weak relative strength.</li>
+            <li>Revenue, margins, or free cash flow deteriorate.</li>
+            <li>Valuation becomes extreme or better alternatives rank higher.</li>
+          </ul>
+        </aside>
+      </section>
+
+      <section class="section" id="risk-feed">
+        <div class="section-heading">
+          <p class="eyebrow">News + geopolitical intelligence</p>
+          <h2>Risk feed that explains impact, not just headlines.</h2>
+          <p>Each event is classified by relevance, affected sectors, impact, and whether it changes the investment thesis.</p>
+        </div>
+        <div class="risk-grid" id="risk-feed-list"></div>
+      </section>
+
+      <section class="section" id="methodology">
+        <div class="section-heading">
+          <p class="eyebrow">Methodology</p>
+          <h2>The scoring engine behind the MVP</h2>
+          <p>AdvisorIQ is designed to be a structured research platform, not a random buy/sell signal generator.</p>
+        </div>
+        <div class="method-grid">
+          <article>
+            <span>01</span>
+            <h3>Screen the universe</h3>
+            <p>Filter for liquid, financially viable stocks before ranking to avoid low-quality names.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Score the evidence</h3>
+            <p>Combine fundamentals, financial strength, valuation, growth, technicals, news, macro risk, and management quality.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Apply red-flag overrides</h3>
+            <p>Severe governance, debt, funding, accounting, or geopolitical events can downgrade a stock even if the numeric score looks strong.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Explain the pick</h3>
+            <p>Every selected stock gets a short “Why Picked,” main risk, best-fit investor type, and removal trigger.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="disclaimer" aria-label="Important disclaimer">
+        <strong>Educational research only.</strong>
+        AdvisorIQ model picks are sample research outputs and do not constitute financial advice, personalized recommendations, or a guarantee of performance. Users should do independent research or consult a licensed financial professional before investing.
+      </section>
+    </main>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
