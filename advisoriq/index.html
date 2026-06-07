@@ -142,7 +142,7 @@
           <div>
             <p class="eyebrow">Backend API</p>
             <h2>The backend analyzes the Indian universe and returns monthly picks.</h2>
-            <p>The site now includes a Node backend at <code>/api/screener/monthly-picks</code>. When you run <code>npm start</code>, the frontend asks the backend for ranked Indian stocks and ETFs; if the backend is unavailable, the browser falls back to its local sample engine.</p>
+            <p>The site now includes a Node backend at <code>/api/screener/monthly-picks</code>. When you run <code>node advisoriq/server/advisoriq-backend.mjs</code>, the frontend asks the backend for ranked Indian stocks and ETFs; if the backend is unavailable, the browser falls back to its local sample engine.</p>
           </div>
           <a class="ghost-button link-button" href="/api/screener/monthly-picks" target="_blank" rel="noreferrer">Open API output</a>
         </div>
@@ -208,7 +208,7 @@
           </article>
         </div>
         <div class="workflow-note">
-          <strong>Developer note:</strong> most content changes happen in <code>src/advisoriq-app.js</code>. Pull the latest code before editing, validate with <code>npm run validate</code>, then commit and push. This avoids most GitHub conflicts.
+          <strong>Developer note:</strong> most content changes happen in <code>src/advisoriq-app.js</code>. Pull the latest code before editing, validate with <code>node advisoriq/tools/validate.mjs</code>, then commit and push. This avoids most GitHub conflicts.
         </div>
       </section>
 

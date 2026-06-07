@@ -20,7 +20,7 @@ git checkout -b advisoriq-clean-mvp
 Apply or cherry-pick the clean AdvisorIQ work, then validate:
 
 ```bash
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 ```
 
 Push the fresh branch:
@@ -33,7 +33,7 @@ Open a new pull request from `advisoriq-clean-mvp` into `main`.
 
 ## What to verify before opening the PR
 
-- `cd advisoriq && npm run validate` passes.
+- `node advisoriq/tools/validate.mjs` passes.
 - No files contain Git conflict-marker text from an unfinished merge or rebase.
 - The PR is opened from a branch based on the latest `main`.
 - The old conflicted PR is closed so reviewers do not keep seeing stale conflict state.

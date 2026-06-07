@@ -9,35 +9,29 @@ This version now includes a scoped Node backend plus a browser fallback. It does
 
 
 
-## Package script conflict resolution
+## Package-file conflict resolution
 
-There is intentionally no root-level `package.json` in this PR. The app scripts live only in:
+There is intentionally no `package.json` in this PR. GitHub was repeatedly showing conflicts on `advisoriq/package.json`, so the MVP now uses direct `node` and `python3` commands instead of npm scripts.
 
-```text
-advisoriq/package.json
-```
-
-That scoped package keeps the useful commands without conflicting with any `package.json` that may already exist on `main`:
+Use these commands from the repository root:
 
 ```bash
-cd advisoriq
-npm start
-npm run preview
-npm run validate
+node advisoriq/server/advisoriq-backend.mjs
+python3 -m http.server 4173 --directory advisoriq
+node advisoriq/tools/validate.mjs
 ```
 
-The `preview` script is kept because it lets reviewers open the site locally before pushing or merging.
+This keeps the app runnable without touching root-level or scoped package files that may already exist on `main`.
 
 ## Conflict-safe app location
 
 The working website has been moved into the scoped `advisoriq/` directory so this PR does not conflict with root-level files on `main`, such as `index.html`, `package.json`, `src/`, or `scripts/`.
 
-Run all local app commands from that folder:
+Run all local app commands from the repository root:
 
 ```bash
-cd advisoriq
-npm run validate
-npm run preview
+node advisoriq/tools/validate.mjs
+python3 -m http.server 4173 --directory advisoriq
 ```
 
 ## Current clean PR status
@@ -49,7 +43,7 @@ This branch is intended to be used as the fresh replacement PR if an older Advis
 If an older PR shows conflicts on GitHub, close it and open a fresh PR after validating this branch. Run:
 
 ```bash
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 ```
 
 The validator scans the whole repository for merge-conflict markers, so it will fail before you push if any file still contains unresolved conflict text.
@@ -59,7 +53,7 @@ The validator scans the whole repository for merge-conflict markers, so it will 
 Use this when you want to see the website before pushing changes to GitHub:
 
 ```bash
-cd advisoriq && npm run preview
+python3 -m http.server 4173 --directory advisoriq
 ```
 
 Then open:
@@ -71,7 +65,7 @@ http://127.0.0.1:4173/
 Before pushing, also run:
 
 ```bash
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 ```
 
 The validator now fails if real merge-conflict markers are left in source files.
@@ -79,7 +73,7 @@ The validator now fails if real merge-conflict markers are left in source files.
 ## How to run it locally
 
 ```bash
-cd advisoriq && npm start
+node advisoriq/server/advisoriq-backend.mjs
 ```
 
 Then open:
@@ -92,7 +86,7 @@ http://127.0.0.1:3000/
 
 ## Backend API
 
-The MVP now includes a working local backend. It is still using the bundled Indian sample universe, not a paid live NSE/BSE data provider yet, but the analysis happens on the server when you run `npm start`.
+The MVP now includes a working local backend. It is still using the bundled Indian sample universe, not a paid live NSE/BSE data provider yet, but the analysis happens on the server when you run `node advisoriq/server/advisoriq-backend.mjs`.
 
 Important endpoints:
 
@@ -341,7 +335,7 @@ advisoriq/tools/validate.mjs
 Run:
 
 ```bash
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 ```
 
 This checks that the core files exist, important MVP phrases are present, and enough sample stock definitions exist.
@@ -356,7 +350,7 @@ Use this workflow before making changes:
 git status
 git pull --rebase origin main
 # make your edits
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 git add .
 git commit -m "Describe your change"
 git push origin main

@@ -1,5 +1,10 @@
 import { readdir, readFile, stat } from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+
+const toolDirectory = dirname(fileURLToPath(import.meta.url));
+const appDirectory = join(toolDirectory, "..");
+const repositoryDirectory = join(appDirectory, "..");
 
 const requiredFiles = ["index.html", "src/advisoriq-styles.css", "src/advisoriq-app.js", "server/advisoriq-backend.mjs"];
 const requiredPhrases = [
@@ -41,15 +46,15 @@ async function collectTextFiles(directory) {
 }
 
 for (const file of requiredFiles) {
-  const contents = await readFile(file, "utf8");
+  const contents = await readFile(join(appDirectory, file), "utf8");
   if (!contents.trim()) {
     throw new Error(`${file} is empty`);
   }
 }
 
-const app = await readFile("src/advisoriq-app.js", "utf8");
-const backend = await readFile("server/advisoriq-backend.mjs", "utf8");
-const html = await readFile("index.html", "utf8");
+const app = await readFile(join(appDirectory, "src/advisoriq-app.js"), "utf8");
+const backend = await readFile(join(appDirectory, "server/advisoriq-backend.mjs"), "utf8");
+const html = await readFile(join(appDirectory, "index.html"), "utf8");
 const combined = `${html}\n${app}\n${backend}`;
 
 for (const phrase of requiredPhrases) {
@@ -58,7 +63,7 @@ for (const phrase of requiredPhrases) {
   }
 }
 
-const allTextFiles = await collectTextFiles("..");
+const allTextFiles = await collectTextFiles(repositoryDirectory);
 for (const file of allTextFiles) {
   const info = await stat(file);
   if (info.size > 1_000_000) continue;
