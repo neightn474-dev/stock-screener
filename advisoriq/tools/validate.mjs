@@ -1,7 +1,12 @@
 import { readdir, readFile, stat } from "node:fs/promises";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const requiredFiles = ["index.html", "src/advisoriq-styles.css", "src/advisoriq-app.js"];
+const toolDirectory = dirname(fileURLToPath(import.meta.url));
+const appDirectory = join(toolDirectory, "..");
+const repositoryDirectory = join(appDirectory, "..");
+
+const requiredFiles = ["index.html", "src/advisoriq-styles.css", "src/advisoriq-app.js", "server/advisoriq-backend.mjs"];
 const requiredPhrases = [
   "Why picked",
   "Model portfolio monitoring",
@@ -41,15 +46,16 @@ async function collectTextFiles(directory) {
 }
 
 for (const file of requiredFiles) {
-  const contents = await readFile(file, "utf8");
+  const contents = await readFile(join(appDirectory, file), "utf8");
   if (!contents.trim()) {
     throw new Error(`${file} is empty`);
   }
 }
 
-const app = await readFile("src/advisoriq-app.js", "utf8");
-const html = await readFile("index.html", "utf8");
-const combined = `${html}\n${app}`;
+const app = await readFile(join(appDirectory, "src/advisoriq-app.js"), "utf8");
+const backend = await readFile(join(appDirectory, "server/advisoriq-backend.mjs"), "utf8");
+const html = await readFile(join(appDirectory, "index.html"), "utf8");
+const combined = `${html}\n${app}\n${backend}`;
 
 for (const phrase of requiredPhrases) {
   if (!combined.includes(phrase)) {
@@ -57,7 +63,7 @@ for (const phrase of requiredPhrases) {
   }
 }
 
-const allTextFiles = await collectTextFiles(".");
+const allTextFiles = await collectTextFiles(repositoryDirectory);
 for (const file of allTextFiles) {
   const info = await stat(file);
   if (info.size > 1_000_000) continue;
@@ -74,9 +80,9 @@ if (instrumentCount < 15) {
   throw new Error(`Expected at least 15 Indian stock/ETF definitions, found ${instrumentCount}`);
 }
 
-const requiredEnginePhrases = ["runScreener", "calculateScore", "monthlyPickLimit", "minLiquidityScore"];
+const requiredEnginePhrases = ["runScreener", "runIndianMarketScreener", "calculateScore", "monthlyPickLimit", "minLiquidityScore", "/api/screener/monthly-picks"];
 for (const phrase of requiredEnginePhrases) {
-  if (!app.includes(phrase)) {
+  if (!combined.includes(phrase)) {
     throw new Error(`Missing screener engine phrase: ${phrase}`);
   }
 }

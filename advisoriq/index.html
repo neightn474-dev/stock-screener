@@ -21,6 +21,7 @@
           <a href="#analysis">Analyze</a>
           <a href="#picks">Monthly Picks</a>
           <a href="#automation">Auto Screener</a>
+          <a href="#backend-api">Backend API</a>
           <a href="#coverage">Coverage</a>
           <a href="#demo-flow">Example Flow</a>
           <a href="#portfolio">Model Portfolio</a>
@@ -135,6 +136,19 @@
       </section>
 
 
+
+      <section class="section" id="backend-api">
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Backend API</p>
+            <h2>The backend analyzes the Indian universe and returns monthly picks.</h2>
+            <p>The site now includes a Node backend at <code>/api/screener/monthly-picks</code>. When you run <code>node advisoriq/server/advisoriq-backend.mjs</code>, the frontend asks the backend for ranked Indian stocks and ETFs; if the backend is unavailable, the browser falls back to its local sample engine.</p>
+          </div>
+          <a class="ghost-button link-button" href="/api/screener/monthly-picks" target="_blank" rel="noreferrer">Open API output</a>
+        </div>
+        <div class="backend-status-grid" id="backend-status" aria-live="polite"></div>
+      </section>
+
       <section class="section" id="coverage">
         <div class="section-heading">
           <p class="eyebrow">Broad market coverage</p>
@@ -194,7 +208,7 @@
           </article>
         </div>
         <div class="workflow-note">
-          <strong>Developer note:</strong> most content changes happen in <code>src/advisoriq-app.js</code>. Pull the latest code before editing, validate with <code>npm run validate</code>, then commit and push. This avoids most GitHub conflicts.
+          <strong>Developer note:</strong> most content changes happen in <code>src/advisoriq-app.js</code>. Pull the latest code before editing, validate with <code>node advisoriq/tools/validate.mjs</code>, then commit and push. This avoids most GitHub conflicts.
         </div>
       </section>
 

@@ -2,15 +2,32 @@
 
 ## Demo flow for a non-technical user
 
-1. Start the site with `cd advisoriq && npm start`.
+1. Start the site and backend together with `node advisoriq/server/advisoriq-backend.mjs`.
 2. Open `http://127.0.0.1:3000/`.
 3. Search `RELIANCE.NS` or `NIFTYBEES.NS`.
 4. Point out the short answer under `Why picked`.
 5. Scroll to `Monthly Picks`.
 6. Click `View report` on any pick.
 7. Scroll to `Model Portfolio` and explain that previous picks can be held, upgraded, downgraded, or removed.
-8. Scroll to `Risk Feed` and explain that news/geopolitical items are interpreted by impact, not just displayed as headlines.
+8. Scroll to `Backend API` and explain that the website is reading ranked picks from `/api/screener/monthly-picks` when `node advisoriq/server/advisoriq-backend.mjs` is running.
+9. Scroll to `Risk Feed` and explain that news/geopolitical items are interpreted by impact, not just displayed as headlines.
 
+
+## Backend demo
+
+Run the backend-powered site:
+
+```bash
+node advisoriq/server/advisoriq-backend.mjs
+```
+
+Open the API output directly:
+
+```text
+http://127.0.0.1:3000/api/screener/monthly-picks
+```
+
+That route returns the analyzed Indian stock/ETF universe, eligible instruments, filtered-out names, and this month’s ranked picks. The frontend calls the same route automatically and falls back to browser-side sample screening only if the backend is not available.
 
 ## Does the user manually enter tickers?
 
@@ -78,7 +95,7 @@ ticker: "RELIANCE.NS"
 4. Validate:
 
 ```bash
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 ```
 
 5. Commit and push:
@@ -109,7 +126,7 @@ This keeps the new screener work conflict-free while preserving the full setup, 
 If GitHub says the old pull request has conflicts, close that PR and open a new one from the latest clean branch. Before opening the new PR, run:
 
 ```bash
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 ```
 
 The validator now scans every project text file, including docs, HTML, CSS, JavaScript, JSON, and Markdown, and fails if conflict markers are present anywhere. This means you do not have to manually inspect every file for merge markers before creating the new PR.
@@ -118,7 +135,7 @@ Suggested flow:
 
 ```bash
 git status
-cd advisoriq && npm run validate
+node advisoriq/tools/validate.mjs
 git add .
 git commit -m "Your change"
 git push origin your-branch
@@ -131,7 +148,7 @@ Then open a fresh PR from that pushed branch.
 If you want to check the website before pushing to GitHub, run:
 
 ```bash
-cd advisoriq && npm run preview
+python3 -m http.server 4173 --directory advisoriq
 ```
 
 Then open:

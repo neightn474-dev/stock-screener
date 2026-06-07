@@ -376,6 +376,7 @@ const riskEvents = [
 
 const currency = new Intl.NumberFormat("en-IN", { maximumFractionDigits: 0 });
 let screeningResults = runScreener();
+let backendStatus = { connected: false, message: "Using browser fallback until backend responds.", source: "Browser sample engine" };
 
 function scoreSet(fundamentals, financialStrength, valuation, growth, technical, news, geopolitical, management) {
   return { fundamentals, financialStrength, valuation, growth, technical, news, geopolitical, management };
@@ -472,20 +473,26 @@ function runScreener() {
   const picks = [];
   const sectorCounts = {};
 
-  const etfCandidate = eligible.find((instrument) => instrument.assetType === "ETF");
-  if (etfCandidate) {
-    picks.push(etfCandidate);
-    sectorCounts[etfCandidate.sector] = 1;
-  }
-
   for (const instrument of eligible) {
-    if (picks.includes(instrument)) continue;
     const sectorCount = sectorCounts[instrument.sector] || 0;
     if (sectorCount >= maxSectorPicks) continue;
     picks.push(instrument);
     sectorCounts[instrument.sector] = sectorCount + 1;
     if (picks.length >= monthlyPickLimit) break;
   }
+
+  const hasRequiredEtf = picks.filter((instrument) => instrument.assetType === "ETF").length >= requiredEtfPicks;
+  const topEtfCandidate = eligible.find((instrument) => instrument.assetType === "ETF");
+  if (!hasRequiredEtf && topEtfCandidate && !picks.includes(topEtfCandidate)) {
+    const replacementIndex = picks.findLastIndex((instrument) => instrument.assetType !== "ETF");
+    if (replacementIndex >= 0) {
+      picks.splice(replacementIndex, 1, topEtfCandidate);
+    } else if (picks.length < monthlyPickLimit) {
+      picks.push(topEtfCandidate);
+    }
+  }
+
+  picks.sort((a, b) => b.finalScore - a.finalScore);
 
   const filteredOut = analyzed.filter((instrument) => !instrument.eligible);
   return {
@@ -560,6 +567,58 @@ function renderScreenerSummary() {
       <p>Rejected before ranking because one or more criteria failed.</p>
     </article>
   `;
+}
+
+function renderBackendStatus() {
+  const container = document.getElementById("backend-status");
+  if (!container) return;
+  const generatedAt = screeningResults.generatedAt ? new Date(screeningResults.generatedAt).toLocaleString("en-IN") : "Local browser run";
+  const apiLabel = backendStatus.connected ? "Connected" : "Fallback mode";
+  container.innerHTML = `
+    <article>
+      <span>API status</span>
+      <strong>${apiLabel}</strong>
+      <p>${backendStatus.message}</p>
+    </article>
+    <article>
+      <span>Backend route</span>
+      <strong>/api/screener/monthly-picks</strong>
+      <p>Returns ranked Indian stocks and ETFs with scores, reasons, risks, and filter results.</p>
+    </article>
+    <article>
+      <span>Universe analyzed</span>
+      <strong>${screeningResults.stats.scanned}</strong>
+      <p>${screeningResults.stats.stocks} stocks and ${screeningResults.stats.etfs} ETFs checked before ranking.</p>
+    </article>
+    <article>
+      <span>Generated</span>
+      <strong>${generatedAt}</strong>
+      <p>${screeningResults.source || backendStatus.source}</p>
+    </article>
+  `;
+}
+
+async function loadBackendScreener() {
+  try {
+    const response = await fetch("/api/screener/monthly-picks", { cache: "no-store" });
+    if (!response.ok) throw new Error(`Backend responded with ${response.status}`);
+    const payload = await response.json();
+    if (!payload?.picks?.length || !payload?.stats) throw new Error("Backend response did not include picks and stats");
+    screeningResults = payload;
+    backendStatus = {
+      connected: true,
+      message: "Backend API is analyzing the Indian sample universe and powering the displayed picks.",
+      source: payload.source || "AdvisorIQ backend",
+    };
+  } catch (error) {
+    screeningResults = runScreener();
+    backendStatus = {
+      connected: false,
+      message: `Backend unavailable, so the browser fallback is running locally. ${error.message}`,
+      source: "Browser sample engine",
+    };
+  }
+  renderAll();
 }
 
 function renderCriteriaChecklist() {
@@ -781,6 +840,7 @@ function findStock(query) {
 }
 
 function renderAll() {
+  renderBackendStatus();
   renderScreenerSummary();
   renderCriteriaChecklist();
   renderPicks();
@@ -800,9 +860,8 @@ document.getElementById("stock-search-form").addEventListener("submit", (event) 
   document.getElementById("analysis").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
-document.getElementById("rerank-button").addEventListener("click", () => {
-  screeningResults = runScreener();
-  renderAll();
+document.getElementById("rerank-button").addEventListener("click", async () => {
+  await loadBackendScreener();
   const cards = document.querySelectorAll(".pick-card");
   cards.forEach((card, index) => {
     card.animate(
@@ -817,3 +876,4 @@ document.getElementById("rerank-button").addEventListener("click", () => {
 });
 
 renderAll();
+loadBackendScreener();
